@@ -57,7 +57,11 @@ local websites = {
     Dropbox           = Website { name = "Dropbox",   url = "https://www.dropbox.com"               },
     Synchrony         = Website { name = "Synchrony", url = "https://securelogin.synchronybank.com" },
     Lobsters          = Website { name = "Lobsters",  url = "http://lobste.rs"                      },
-    Oreilly           = Website { name = "Oreilly",   url = "http://oreilly.com"                    },
+    Oreilly   = Website { name = "Oreilly", url = "http://oreilly.com" },
+    MxKernelMeeting = Website { name = "MxKernel", url = "https://webconf.uni-osnabrueck.de/b/pro-jsm-uzu-uyo" },
+    OberseminarESS  = Website { name = "OberseminarESS", url =
+    "https://studip.uni-osnabrueck.de/plugins.php/meetingplugin/index?cid=492183d1b86f35ae3b88c9cae758248b#/" },
+    SciSpace          = Website { name = "SciSpace", url="https://typeset.io/"},
 
     -- Externally defined Website entities
     Airbnb            = requireEntity("website", "airbnb"),
@@ -91,14 +95,15 @@ local websites = {
     Yelp              = requireEntity("website", "yelp"),
     YouTube           = requireEntity("website", "youtube"),
     ZeroTier          = requireEntity("website", "zerotier"),
+    ESSTeam           = requireEntity("website", "ess-team-meeting"),
 }
 
 -- Create custom file entities
-local files = {
-    Code    = File "~/Code",
-    TV      = File "~/Movies/TV",
-    Dropbox = File "~/Dropbox",
-}
+--local files = {
+--    Code    = File "~/Code",
+--    TV      = File "~/Movies/TV",
+--    Dropbox = File "~/Dropbox",
+--}
 
 -- Initialize LIFX light
 local LIFX = requireEntity("entity", "lifx")
@@ -122,25 +127,24 @@ local entities = {
     Postico            = Application "Postico",
     ProtonVPN          = Application "ProtonVPN",
     Slack              = Application "Slack",
-    VisualStudioCode   = Application "Visual Studio Code",
+    VisualStudioCode = Application "VSCodium",
+    Zotero           = Application "Zotero",
+    Kitty            = Application "kitty",
+    Hyper            = Application "Hyper",
+    Ghostty          = Application "Ghostty",
 
     -- Require externally defined application entities
-    ["1Password"]      = requireEntity("application", "1password"),
+    Arc                = requireEntity("application", "arc"),
     Fantastical        = requireEntity("application", "fantastical"),
-    IINA               = requireEntity("application", "iina"),
     Hammerspoon        = requireEntity("application", "hammerspoon"),
     iTerm              = requireEntity("application", "iterm"),
     Java               = requireEntity("application", "java"),
-    LINE               = requireEntity("application", "line"),
     MicrosoftExcel     = requireEntity("application", "microsoft-excel"),
-    MEGASync           = requireEntity("application", "MEGASync"),
-    MicrosoftOutlook   = requireEntity("application", "microsoft-outlook"),
+    MicrosoftPowerPoint= requireEntity("application", "microsoft-powerpoint"),
     MicrosoftWord      = requireEntity("application", "microsoft-word"),
     ScriptEditor       = requireEntity("application", "script-editor"),
-    Steam              = requireEntity("application", "steam"),
-    TablePlus          = requireEntity("application", "tableplus"),
-    VMWareFusion       = requireEntity("application", "vmware-fusion"),
     VLC                = requireEntity("application", "vlc"),
+    Warp               = requireEntity("application", "warp"),
     Zoom               = requireEntity("application", "zoom"),
 
     -- Require other (non-application) entities
@@ -173,48 +177,27 @@ local entities = {
 Mode {
     name = "entity",
     shortcuts = {
-        { nil                , "1" , entities["1Password"]       },
-        { nil                , "a" , entities.Alacritty          },
+        { {"shift"}                , "a" , entities.Arc          },
         { nil                , "c" , entities.Fantastical        },
         { nil                , "e" , entities.MicrosoftExcel     },
         { nil                , "j" , entities.Java               },
         { nil                , "k" , entities.Keyboard           },
-        { nil                , "l" , entities.BedroomLIFX        },
         { nil                , "o" , entities.Obsidian           },
-        { nil                , "v" , entities.VMWareFusion       },
         { nil                , "w" , entities.MicrosoftWord      },
         { nil                , "z" , entities.Zoom               },
-        { { "alt" }          , "c" , entities.CiteAs             },
-        { { "alt" }          , "p" , entities.SmartPlug          },
-        { { "alt", "cmd" }   , "c" , entities.Cron               },
-        { { "alt", "cmd" }   , "p" , entities.Plex               },
-        { { "alt", "cmd" }   , "s" , entities.Steam              },
-        { { "cmd" }          , "c" , entities.ClipboardText      },
-        { { "cmd" }          , "e" , entities.EmojiPicker        },
-        { { "cmd" }          , "g" , entities.GlyphPicker        },
-        { { "cmd" }          , "k" , entities.KaomojiPicker      },
-        { { "cmd" }          , "m" , entities.MEGASync           },
         { { "cmd" }          , "t" , entities.TextEdit           },
         { { "cmd" }          , "v" , entities.FSVolume           },
         { { "ctrl" }         , "n" , entities.NotificationCenter },
-        { { "ctrl" }         , "p" , entities.ProtonVPN          },
-        { { "ctrl" }         , "s" , entities.ScriptEditor       },
-        { { "shift" }        , "d" , entities.Discord            },
-        { { "shift" }        , "f" , entities.Firefox            },
-        { { "shift" }        , "g" , entities.Gitter             },
+        { { "ctrl" },                "s",  entities.ScriptEditor },
+        { { "ctrl" }         , "p" , entities.MicrosoftPowerPoint},
         { { "shift" }        , "h" , entities.Hammerspoon        },
-        { { "shift" }        , "i" , entities.IINA               },
-        { { "shift" }        , "l" , entities.LINE               },
         { { "shift" }        , "m" , entities.Messenger          },
-        { { "shift" }        , "p" , entities.TablePlus          },
-        { { "shift" }        , "t" , entities.iTerm              },
+        { { "shift" }        , "t" , entities.Ghostty              },
         { { "shift" }        , "v" , entities.VLC                },
         { { "shift", "cmd" } , "f" , entities.FaceTime           },
-        { { "shift", "cmd" } , "l" , entities.LimeChat           },
-        { { "shift", "cmd" } , "m" , entities.MicrosoftOutlook   },
-        { { "shift", "cmd" } , "p" , entities.Postico            },
         { { "shift", "cmd" } , "s" , entities.Slack              },
-        { { "shift", "cmd" } , "v" , entities.VisualStudioCode   },
+        { { "shift", "cmd" },  "v",  entities.VisualStudioCode },
+        { { "shift" }        , "z",  entities.Zotero},
     },
 }
 
@@ -223,17 +206,17 @@ Mode {
     name = "select",
     shortcuts = {
         { nil                , "e" , entities.MicrosoftExcel   , "Select a Microsoft Excel window"   },
-        { nil                , "j" , entities.Java             , "Select a Java app"                 },
-        { nil                , "w" , entities.MicrosoftWord    , "Select a Microsoft Word window"    },
-        { nil                , "v" , entities.VMWareFusion     , "Select VMware Fusion window"       },
+        { nil,                 "j",  entities.Java,              "Select a Java app" },
+        { nil              , "o", entities.Obsidian          , "Select an Obsidian Window"},
+        { nil,                 "w",  entities.MicrosoftWord,      "Select a Microsoft Word window" },
+        { { "ctrl" }          , "p",  entities.MicrosoftPowerPoint,"Select a Microsoft PowerPoint window"},
         { { "cmd" }          , "t" , entities.TextEdit         , "Select a TextEdit window"          },
         { { "cmd" }          , "v" , entities.FSVolume         , "Select a filesystem volume"        },
-        { { "ctrl" }         , "s" , entities.ScriptEditor     , "Select a Script Editor window"     },
-        { { "shift" }        , "i" , entities.IINA             , "Select an IINA window"             },
-        { { "shift" }        , "p" , entities.TablePlus        , "Select a Database Connection"      },
-        { { "shift" }        , "t" , entities.iTerm            , "Select an iTerm window"            },
-        { { "shift" }        , "v" , entities.VLC              , "Select a VLC window"               },
-        { { "shift", "cmd" } , "m" , entities.MicrosoftOutlook , "Select a Microsoft Outlook window" },
+        { { "ctrl" },          "s",  entities.ScriptEditor,       "Select a Script Editor window" },
+        { { "shift" }        , "a" , entities.Arc             , "Select an Arc window"},
+        { { "shift" }        , "t" , entities.Ghostty            , "Select a Terminal window"            },
+        { nil,                 "v",  entities.VisualStudioCode,   "Select a Code Window" },
+        { { "cmd", "shift" } , "m", defaultEntities.Mail,       "Select a Mail window"},
     },
 }
 
@@ -247,8 +230,9 @@ Mode {
         { nil                , "d" , websites.DuckDuckGo        },
         { nil                , "e" , websites.Etsy              },
         { nil                , "g" , websites.Google            },
-        { nil                , "m" , websites.FacebookMessenger },
-        { nil                , "n" , websites.Netflix           },
+        { nil                , "m" , websites.MxKernelMeeting },
+        { nil,                 "n",  websites.Netflix },
+        { nil                , "o" , websites.OberseminarESS },
         { nil                , "r" , websites.Reddit            },
         { nil                , "s" , websites.StackOverflow     },
         { nil                , "w" , websites.Wikipedia         },
@@ -270,7 +254,7 @@ Mode {
         { { "shift" }        , "m" , websites.GoogleMaps        },
         { { "shift" }        , "n" , websites.NPM               },
         { { "shift" }        , "o" , websites.Oreilly           },
-        { { "shift" }        , "t" , websites.TempMail          },
+        { { "shift" }        , "t" , websites.ESSTeam          },
         { { "shift" }        , "y" , websites.Yelp              },
         { { "shift" }        , "z" , websites.ZeroTier          },
         { { "shift", "cmd" } , "a" , websites.MyAnimeList       },
@@ -281,14 +265,14 @@ Mode {
 }
 
 -- Register file mode shortcuts
-Mode {
-    name = "file",
-    shortcuts = {
-        { nil         , "c" , files.Code    },
-        { { "alt" }   , "d" , files.Dropbox },
-        { { "shift" } , "t" , files.TV      },
-    },
-}
+--Mode {
+--    name = "file",
+--    shortcuts = {
+--        { nil         , "c" , files.Code    },
+--        { { "alt" }   , "d" , files.Dropbox },
+--        { { "shift" } , "t" , files.TV      },
+--    },
+--}
 
 ----------------------------------------------------------------------------------------------------
 -- Register custom modes and their shortcuts
